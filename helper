@@ -1,0 +1,48 @@
+#!/bin/bash
+
+ACTION=$1
+
+if [[ $2 = '-d' ]]; then
+  TAG='-debug'
+else
+  TAG=''
+fi
+
+case $ACTION in
+build)
+  echo build $TAG
+  sudo docker build -t homeski/macbot .
+  ;;
+run)
+  echo run $TAG
+  if [[ -z $TAG ]]; then
+    # non-debug
+    sudo docker run -d -p 3001:8080 --name macbot homeski/macbot
+  else
+    # debug
+    sudo docker run -d -p 3002:8080 --name macbot$TAG homeski/macbot
+  fi
+  ;;
+test)
+  echo test $TAG
+  if [[ -z $TAG ]]; then
+    # non-debug
+    curl -d '{"text":"macbot"}' -H "Content-Type: application/json" localhost:3001/groupme
+  else
+    # debug
+    curl -d '{"text":"macbot"}' -H "Content-Type: application/json" localhost:3002/groupme
+  fi
+  ;;
+kill)
+  echo kill $TAG
+  sudo docker kill macbot$TAG
+  sudo docker rm macbot$TAG
+  ;;
+watch)
+  echo watch $TAG
+  sudo docker logs -f macbot$TAG
+  ;;
+*)
+  echo 'unknown command. use build | run | test | kill | watch and -d for debug'
+  ;;
+esac
