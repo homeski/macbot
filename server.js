@@ -46,7 +46,7 @@ app.post('/groupme', function (req, res) {
   // Log every message into InfluxDB
   var sender_id = req.body['sender_id'];
   var sender_name = req.body['name'];
-  var cmd = "curl -i -XPOST 'http://" + DB_HOST + ":8086/write?db=mydb' --data-binary 'post,sender_id=" + sender_id + ",name=" + sender_name + " value=1 `date +'%s'`000000000";
+  var cmd = "curl -i -XPOST 'http://" + DB_HOST + ":8086/write?db=mydb' --data-binary \"post,sender_id=" + sender_id + " value=1 `date +%s`000000000\"";
   shell.exec(cmd).stdout;
 
   // Clean the incoming message stringify
