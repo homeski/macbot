@@ -53,7 +53,15 @@ app.post('/groupme', function (req, res) {
   var text = req.body['text'].trim().toUpperCase();
 
   // Match any string containing 'macbot'
-  if (text.indexOf('MACBOT') !== -1 || text.indexOf('MACB0T') !== -1) {
+  if (text.indexOf('MACBOT') !== -1 && req.body['sender_id'] === '27041193') {
+    var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/macbot-tyler.png";
+    var response = shell.exec(cmd).stdout;
+    var img_url = JSON.parse(response).payload.url;
+    console.log('img_url: ' + img_url);
+    
+    postMsg({'picture_url': img_url});
+
+  } else if (text.indexOf('MACBOT') !== -1 || text.indexOf('MACB0T') !== -1) {
     // Submit photo to groupme photo service and get the image URL back
     var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
     var response = shell.exec(cmd).stdout;
