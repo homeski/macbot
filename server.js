@@ -61,7 +61,7 @@ app.post('/groupme', function (req, res) {
     
     postMsg({'picture_url': img_url});
 
-  } else if (text.indexOf('MACBOT') !== -1 || text.indexOf('MACB0T') !== -1) {
+  } else if (text.indexOf('MACBOT') !== -1 || text.indexOf('MACB0T') !== -1 || text.indexOf('MACBOY') !== -1) {
     // Submit photo to groupme photo service and get the image URL back
     var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
     var response = shell.exec(cmd).stdout;
