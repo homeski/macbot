@@ -8,10 +8,15 @@ var shell = require('shelljs');
 var yaml = require('js-yaml')
 
 // Init
-const DEBUG = false;
+var DEBUG = false;
 const DB_HOST = process.env.DB_NAME;
 const PORT = 8080;
 var BOT, TOKEN;
+
+// Command line arguments
+if (process.argv[2] != null) {
+  DEBUG = process.argv[2].toLowerCase() === 'debug' ? true : false;
+}
 
 // Load config and choose the correct bot
 // Get document, or throw exception on error
