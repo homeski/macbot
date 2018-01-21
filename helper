@@ -52,7 +52,14 @@ watch)
   echo watch $TAG
   docker logs -f macbot$TAG
   ;;
+reload)
+  echo reload $TAG
+  ./helper build $2
+  ./helper kill $2
+  ./helper run $2
+  ./helper watch $2
+  ;;
 *)
-  echo 'unknown command. use build | run | test | kill | watch and -d for debug'
+  echo 'unknown command. use build | run | test | kill | reload | watch and -d for debug'
   ;;
 esac
