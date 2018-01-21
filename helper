@@ -24,7 +24,7 @@ run)
     docker run -d -p 8081:80 -p 9081:8083  --name=influxdb --network=macbot_nw                        homeski/grafana-influxdb
   else
     # debug
-    docker run -d -p 3002:8080 --name macbot$TAG   --network=macbot_nw$TAG --env DB_NAME=influxdb$TAG homeski/macbot
+    docker run -d -p 3002:8080 --name macbot$TAG   --network=macbot_nw$TAG --env DEBUG=true --env DB_NAME=influxdb$TAG homeski/macbot
     docker run -d -p 8082:80 -p 9082:8083  --name=influxdb$TAG --network=macbot_nw$TAG                          homeski/grafana-influxdb
   fi
   ;;
