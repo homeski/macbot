@@ -19,11 +19,12 @@ tyler:
     replies:
       - image
 cody:
-  - match: '^.*\^stupid.*':
+  - match: '^.*\^stupid.*'
     replies:
       - '^stupid'
 24528631:
   - match: 'foo'
     replies:
       - 'bar'
-
+      - 'barbar'
+      - 'barbarbar'

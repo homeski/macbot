@@ -13,6 +13,7 @@
     "body-parser": "*",
     "request": "*",
     "shelljs": "*",
-    "js-yaml": "*"
+    "js-yaml": "*",
+    "underscore": "*"
   }
 }

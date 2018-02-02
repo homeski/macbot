@@ -5,7 +5,8 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var fs = require('fs');
 var shell = require('shelljs');
-var yaml = require('js-yaml')
+var yaml = require('js-yaml');
+var _ = require('underscore');
 
 // Init
 var DEBUG;
@@ -68,13 +69,13 @@ app.post('/groupme', function (req, res) {
 
   matches[userID].forEach(function(obj, i) {
     if (body['text'].toLowerCase() === obj['match'].toLowerCase()) {
-      reply = matches[userID][i][0]
+      reply = _.sample(obj['replies']);
     }
   });
 
   // Send a reply if needed
   if (reply !== '') {
-    postMsg({'text': reply});
+    postMsg({ 'text': reply });
   }
 
   // // Log incoming request body from chat post
