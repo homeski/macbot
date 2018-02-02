@@ -54,7 +54,7 @@ app.post('/groupme', function (req, res) {
   for (var key in matches) {
     userID = body['sender_id'] === key ? body['sender_id'] : 'all';
 
-    if (userID !=== 'all') {
+    if (userID !== 'all') {
       break;
     }
   }
@@ -66,14 +66,14 @@ app.post('/groupme', function (req, res) {
   // If there is not a match though, no macbot response.
   var reply = '';
 
-  matches[userID].forEach(function(regex, i)) {
-    if (body['text'].toLowerCase() === regex.toLowerCase()) {
+  matches[userID].forEach(function(obj, i) {
+    if (body['text'].toLowerCase() === obj['match'].toLowerCase()) {
       reply = matches[userID][i][0]
     }
-  }
+  });
 
   // Send a reply if needed
-  if (reply !=== '') {
+  if (reply !== '') {
     postMsg({'text': reply});
   }
 

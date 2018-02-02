@@ -1,22 +1,29 @@
 all:
-  - '^.*macbot jackpot.*$':
-    - 'maybe'
-  - '^.*$':
-    - image
+  - match: '^.*macbot jackpot.*$'
+    replies:
+      - 'maybe'
+  - match: '^.*$'
+    replies:
+      - image
 tyler:
-  - '^.*macb0x.*$':
-    - 'nice try'
-    - 'maybe next time'
-    - image
-  - '^.*homeebot.*$':
-    - 'mmhmmm'
-    - 'hahahahaha'
-  - '^.*$':
-    - image
+  - match: '^.*macb0x.*$'
+    replies:
+      - 'nice try'
+      - 'maybe next time'
+      - image
+  - match: '^.*homeebot.*$'
+    replies:
+      - 'mmhmmm'
+      - 'hahahahaha'
+  - match: '^.*$'
+    replies:
+      - image
 cody:
-  - '^.*\^stupid.*':
-    - '^stupid'
+  - match: '^.*\^stupid.*':
+    replies:
+      - '^stupid'
 24528631:
-  - 'foo':
-    - 'bar'
+  - match: 'foo'
+    replies:
+      - 'bar'
 
