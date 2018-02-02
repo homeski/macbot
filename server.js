@@ -48,53 +48,70 @@ app.post('/groupme', function (req, res) {
   // Make a copy of the incoming message body
   const body = Object.assign({}, req.body);
 
-  // Convert text to lowercase
-  body['text'].toLowerCase();
+  // Check if a specific user sent the message
+  var userID = 'all';
 
-  // loop and test matches...
   for (var key in matches) {
-    if (body['sender_id'] === key) {
-      console.log('yayfsgfgfsdgfdgfdgfgfsdgsfdgdfgdfgfdg')
+    userID = body['sender_id'] === key ? body['sender_id'] : 'all';
+
+    if (userID !=== 'all') {
+      break;
     }
   }
 
-  
+  // Match incoming message against configured regex
+  // and choose a reply.
+  // In some cases a atch is always gauranteed because the final regex
+  // is a wildcard.
+  // If there is not a match though, no macbot response.
+  var reply = '';
 
-  // Log incoming request body from chat post
-  console.log('body: ' + JSON.stringify(req.body));
-
-  // Log every message into InfluxDB
-  var sender_id = req.body['sender_id'];
-  var sender_name = req.body['name'];
-  var cmd = "curl -i -XPOST 'http://" + DB_HOST + ":8086/write?db=mydb' --data-binary \"post,sender_id=" + sender_id + " value=1 `date +%s`000000000\"";
-  shell.exec(cmd).stdout;
-
-  // Clean the incoming message stringify
-  var text = req.body['text'].trim().toUpperCase();
-
-  // Match any string containing 'macbot'
-  if (text.indexOf('MACBOT') !== -1 && req.body['sender_id'] === '27041193') {
-    var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/macbot-tyler.png";
-    var response = shell.exec(cmd).stdout;
-    var img_url = JSON.parse(response).payload.url;
-    console.log('img_url: ' + img_url);
-    
-    postMsg({'picture_url': img_url});
-
-  } else if (text.indexOf('MACBOT') !== -1 || text.indexOf('MACB0T') !== -1 || text.indexOf('MACBOY') !== -1) {
-    // Submit photo to groupme photo service and get the image URL back
-    var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
-    var response = shell.exec(cmd).stdout;
-    var img_url = JSON.parse(response).payload.url;
-    console.log('img_url: ' + img_url);
-
-    postMsg({'picture_url': img_url});
-
-  } else if ((text.indexOf('^STUPID') !== -1 || text.indexOf('^ STUPID') !== -1) && req.body['sender_id'] === '27041248') {
-    postMsg({'text': '^stupid'});
-  } else if (text.indexOf('^') !== -1 && req.body['sender_id'] === '27041248') {
-    postMsg({'text': req.body['text']});
+  matches[userID].forEach(function(regex, i)) {
+    if (body['text'].toLowerCase() === regex.toLowerCase()) {
+      reply = matches[userID][i][0]
+    }
   }
+
+  // Send a reply if needed
+  if (reply !=== '') {
+    postMsg({'text': reply});
+  }
+
+  // // Log incoming request body from chat post
+  // console.log('body: ' + JSON.stringify(req.body));
+
+  // // Log every message into InfluxDB
+  // var sender_id = req.body['sender_id'];
+  // var sender_name = req.body['name'];
+  // var cmd = "curl -i -XPOST 'http://" + DB_HOST + ":8086/write?db=mydb' --data-binary \"post,sender_id=" + sender_id + " value=1 `date +%s`000000000\"";
+  // shell.exec(cmd).stdout;
+
+  // // Clean the incoming message stringify
+  // var text = req.body['text'].trim().toUpperCase();
+
+  // // Match any string containing 'macbot'
+  // if (text.indexOf('MACBOT') !== -1 && req.body['sender_id'] === '27041193') {
+  //   var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/macbot-tyler.png";
+  //   var response = shell.exec(cmd).stdout;
+  //   var img_url = JSON.parse(response).payload.url;
+  //   console.log('img_url: ' + img_url);
+
+  //   postMsg({'picture_url': img_url});
+
+  // } else if (text.indexOf('MACBOT') !== -1 || text.indexOf('MACB0T') !== -1 || text.indexOf('MACBOY') !== -1) {
+  //   // Submit photo to groupme photo service and get the image URL back
+  //   var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
+  //   var response = shell.exec(cmd).stdout;
+  //   var img_url = JSON.parse(response).payload.url;
+  //   console.log('img_url: ' + img_url);
+
+  //   postMsg({'picture_url': img_url});
+
+  // } else if ((text.indexOf('^STUPID') !== -1 || text.indexOf('^ STUPID') !== -1) && req.body['sender_id'] === '27041248') {
+  //   postMsg({'text': '^stupid'});
+  // } else if (text.indexOf('^') !== -1 && req.body['sender_id'] === '27041248') {
+  //   postMsg({'text': req.body['text']});
+  // }
 });
 
 function postMsg(options) {
