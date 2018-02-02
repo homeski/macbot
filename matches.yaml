@@ -1,0 +1,22 @@
+all:
+  '^.*macbot jackpot.*$':
+    - 'maybe'
+  '^.*$':
+    - image
+tyler:
+  '^.*macb0x.*$':
+    - 'nice try'
+    - 'maybe next time'
+    - image
+  '^.*homeebot.*$':
+    - 'mmhmmm'
+    - 'hahahahaha'
+  '^.*$':
+    - image
+cody:
+  '^.*\^stupid.*':
+    - '^stupid'
+24528631:
+  'foo':
+    - 'bar'
+

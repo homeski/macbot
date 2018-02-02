@@ -20,6 +20,7 @@ DEBUG = process.env.DEBUG === 'true' ? true : false;
 // Get document, or throw exception on error
 try {
   var doc = yaml.safeLoad(fs.readFileSync('./credentials.yaml', 'utf8'));
+  var matches = yaml.safeLoad(fs.readFileSync('./matches.yaml', 'utf8'));
 } catch (e) {
   console.log(e);
   process.exit(1);
@@ -44,6 +45,21 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post('/groupme', function (req, res) {
+  // Make a copy of the incoming message body
+  const body = Object.assign({}, req.body);
+
+  // Convert text to lowercase
+  body['text'].toLowerCase();
+
+  // loop and test matches...
+  for (var key in matches) {
+    if (body['sender_id'] === key) {
+      console.log('yayfsgfgfsdgfdgfdgfgfsdgsfdgdfgdfgfdg')
+    }
+  }
+
+  
+
   // Log incoming request body from chat post
   console.log('body: ' + JSON.stringify(req.body));
 
