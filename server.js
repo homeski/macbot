@@ -129,12 +129,9 @@ function postMsg(options) {
   msg_options.form = defaults;
 
   request(msg_options, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log(JSON.stringify('body: ' + body));
-      console.log(JSON.stringify('response: ' + response));
-    } else {
-      console.log('error: ' + error);
-    }
+  console.log('error:', error);
+  console.log('statusCode:', response && response.statusCode);
+  console.log('body:', body);
   });
 }
 
