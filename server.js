@@ -73,9 +73,26 @@ app.post('/groupme', function (req, res) {
     }
   });
 
-  // Send a reply if needed
-  if (reply !== '') {
-    postMsg({ 'text': reply });
+  switch (reply) {
+    case '':
+      // No reply
+      break;
+    case 'image':
+      // Submit photo to groupme photo service and get the image URL back
+      var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
+      var response = shell.exec(cmd).stdout;
+      var img_url = JSON.parse(response).payload.url;
+
+      console.log('img_url: ' + img_url);
+
+      postMsg({'picture_url': img_url});
+      // Post image
+      postMsg({});
+      break;
+    default:
+      // Post reply
+      postMsg({ 'text': reply });
+      break;
   }
 
   // // Log incoming request body from chat post
@@ -129,9 +146,9 @@ function postMsg(options) {
   msg_options.form = defaults;
 
   request(msg_options, function (error, response, body) {
-  console.log('error:', error);
-  console.log('statusCode:', response && response.statusCode);
-  console.log('body:', body);
+    console.log('error:', error);
+    console.log('statusCode:', response && response.statusCode);
+    console.log('body:', body);
   });
 }
 
