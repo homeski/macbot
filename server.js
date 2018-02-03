@@ -91,10 +91,8 @@ app.post('/groupme', function (req, res) {
       reply = _.sample(obj['replies']);
     }
 
-    // Once a reply is found, we can break out
-    if (reply !== '') {
-      break;
-    }
+    // Should add a break here at some point
+    // to avoid unnecessary loops
   });
 
   // Depending on the value of reply, there are different actions to take
@@ -115,42 +113,6 @@ app.post('/groupme', function (req, res) {
       postMsg({ 'text': reply });
       break;
   }
-
-  // // Log incoming request body from chat post
-  // console.log('body: ' + JSON.stringify(req.body));
-
-  // // Log every message into InfluxDB
-  // var sender_id = req.body['sender_id'];
-  // var sender_name = req.body['name'];
-  // var cmd = "curl -i -XPOST 'http://" + DB_HOST + ":8086/write?db=mydb' --data-binary \"post,sender_id=" + sender_id + " value=1 `date +%s`000000000\"";
-  // shell.exec(cmd).stdout;
-
-  // // Clean the incoming message stringify
-  // var text = req.body['text'].trim().toUpperCase();
-
-  // // Match any string containing 'macbot'
-  // if (text.indexOf('MACBOT') !== -1 && req.body['sender_id'] === '27041193') {
-  //   var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/macbot-tyler.png";
-  //   var response = shell.exec(cmd).stdout;
-  //   var img_url = JSON.parse(response).payload.url;
-  //   console.log('img_url: ' + img_url);
-
-  //   postMsg({'picture_url': img_url});
-
-  // } else if (text.indexOf('MACBOT') !== -1 || text.indexOf('MACB0T') !== -1 || text.indexOf('MACBOY') !== -1) {
-  //   // Submit photo to groupme photo service and get the image URL back
-  //   var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
-  //   var response = shell.exec(cmd).stdout;
-  //   var img_url = JSON.parse(response).payload.url;
-  //   console.log('img_url: ' + img_url);
-
-  //   postMsg({'picture_url': img_url});
-
-  // } else if ((text.indexOf('^STUPID') !== -1 || text.indexOf('^ STUPID') !== -1) && req.body['sender_id'] === '27041248') {
-  //   postMsg({'text': '^stupid'});
-  // } else if (text.indexOf('^') !== -1 && req.body['sender_id'] === '27041248') {
-  //   postMsg({'text': req.body['text']});
-  // }
 });
 
 function postMsg(options) {
