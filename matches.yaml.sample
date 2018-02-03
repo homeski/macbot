@@ -1,0 +1,21 @@
+# All messages are converted to lowercase
+# No need to match against uppercase characters
+all:
+  - match: 'macbot'
+    replies:
+      - image
+12345678:
+  - match: 'foo'
+    replies:
+      - 'bar'
+      - 'barbar'
+      - 'barbarbar'
+87654321:
+  - match: 'foo'
+    replies:
+      - 'bar'
+      - 'barbar'
+      - 'barbarbar'
+  - match: '.*'
+    replies:
+      - image

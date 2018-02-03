@@ -49,33 +49,58 @@ app.post('/groupme', function (req, res) {
   // Make a copy of the incoming message body
   const body = Object.assign({}, req.body);
 
-  // Check if a specific user sent the message
+  // SAMPLE BODY
+  // body: {
+  //   "attachments":  [],
+  //   "avatar_url":   "https://i.groupme.com/750x436.jpeg.1f104b1d544e41c89d1bb",
+  //   "created_at":   1516745932,
+  //   "group_id":     "13896308",
+  //   "id":           "157774595555563188",
+  //   "name":         "Display name",
+  //   "sender_id":    "12345678",
+  //   "sender_type":  "user",
+  //   "source_guid":  "cdc0d76ac8db7777777e4bae1601be5c",
+  //   "system":       false,
+  //   "text":         "text sent",
+  //   "user_id":      "12345678"
+  // }
+
   var userID = 'all';
 
+  // Check each key in matches.yaml
   for (var key in matches) {
+    // Set userID if the sender matches a key
     userID = body['sender_id'] === key ? body['sender_id'] : 'all';
 
+    // If userID != all, then we found a key match, so break out
     if (userID !== 'all') {
       break;
     }
   }
 
-  // Match incoming message against configured regex
-  // and choose a reply.
-  // In some cases a atch is always gauranteed because the final regex
-  // is a wildcard.
-  // If there is not a match though, no macbot response.
   var reply = '';
+  var re = null;
 
+  // Check 'match' value in matches.yaml for given user
   matches[userID].forEach(function(obj, i) {
-    if (body['text'].toLowerCase() === obj['match'].toLowerCase()) {
+    re = new RegExp(obj['match']);
+
+    // Check if we find a regex match on a 'match' value
+    if (re.exec(body['text'].toLowerCase()) != null) {
+      // Match was found, choose a random reply
       reply = _.sample(obj['replies']);
+    }
+
+    // Once a reply is found, we can break out
+    if (reply !== '') {
+      break;
     }
   });
 
+  // Depending on the value of reply, there are different actions to take
   switch (reply) {
     case '':
-      // No reply
+      // Do nothing
       break;
     case 'image':
       // Submit photo to groupme photo service and get the image URL back
@@ -83,14 +108,10 @@ app.post('/groupme', function (req, res) {
       var response = shell.exec(cmd).stdout;
       var img_url = JSON.parse(response).payload.url;
 
-      console.log('img_url: ' + img_url);
-
       postMsg({'picture_url': img_url});
-      // Post image
-      postMsg({});
       break;
     default:
-      // Post reply
+      // Post a text reply
       postMsg({ 'text': reply });
       break;
   }
