@@ -103,6 +103,8 @@ app.post('/groupme', function (req, res) {
     case 'image':
       // Submit photo to groupme photo service and get the image URL back
       var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
+      console.log('cmd: ', cmd);
+
       var response = shell.exec(cmd).stdout;
       var img_url = JSON.parse(response).payload.url;
 
