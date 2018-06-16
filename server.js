@@ -8,11 +8,17 @@ var shell = require('shelljs');
 var yaml = require('js-yaml');
 var _ = require('underscore');
 
+// Helper functions
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 // Init
 var DEBUG;
 const DB_HOST = process.env.DB_NAME;
 const PORT = 8080;
 var BOT, TOKEN;
+var files = [];
 
 // Command line arguments
 DEBUG = process.env.DEBUG === 'true' ? true : false;
@@ -40,6 +46,9 @@ var msg_options = {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
 };
+
+// Load the array of photo filenames
+files = fs.readdirSync('./photos');
 
 // Express
 const app = express();
@@ -101,8 +110,10 @@ app.post('/groupme', function (req, res) {
       // Do nothing
       break;
     case 'image':
+      // Pick a random photo to use
+      var filename = files[getRandomInt(arr.length)];
       // Submit photo to groupme photo service and get the image URL back
-      var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/`ls photos | shuf -n 1`";
+      var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/" + filename;
       console.log('cmd: ', cmd);
 
       var response = shell.exec(cmd).stdout;
