@@ -111,7 +111,8 @@ app.post('/groupme', function (req, res) {
       break;
     case 'image':
       // Pick a random photo to use
-      var filename = files[getRandomInt(arr.length)];
+      var filename = files[getRandomInt(files.length)];
+
       // Submit photo to groupme photo service and get the image URL back
       var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/" + filename;
       console.log('cmd: ', cmd);
