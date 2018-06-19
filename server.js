@@ -135,13 +135,13 @@ app.post('/groupme', function (req, res) {
       var sortedFiles = insertionSort(files);
 
       var i = 1;
-      var count = 5;
+      var count = 10;
       var string = "";
       var picture;
 
       while (i <= count) {
         picture = sortedFiles[sortedFiles.length - i];
-        string += picture.filename + ': ' + picture.counter + ', ';
+        string += i + ') ' + picture.filename + ': ' + picture.counter + '\r\n';
         i++;
       }
 
