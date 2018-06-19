@@ -176,7 +176,7 @@ function postMsg(options) {
 
 function insertionSort(files) {
   var a = files.slice();
-  var tmp;
+  var i, j, tmp;
 
   for (i = 0; i < a.length; i++) {
     for (j = i; j > 0; j--) {
