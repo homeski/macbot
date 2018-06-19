@@ -140,7 +140,7 @@ app.post('/groupme', function (req, res) {
       var picture;
 
       while (i <= count) {
-        picture = sortedFiles[sortedFiles.length - count];
+        picture = sortedFiles[sortedFiles.length - i];
         string += picture.filename + ': ' + picture.counter + ', ';
         i++;
       }
