@@ -132,7 +132,20 @@ app.post('/groupme', function (req, res) {
       postMsg({'picture_url': img_url});
       break;
     case 'stats':
-      postMsg({'text': 'foo'});
+      var sortedFiles = insertionSort(files);
+
+      var i = 1;
+      var count = 5;
+      var string = "";
+      var picture;
+
+      while (i <= count) {
+        picture = sortedFiles[sortedFiles.length - count];
+        string += picture.filename + ': ' + picture.counter + ', ';
+        i++;
+      }
+
+      postMsg({'text': string});
       break;
     default:
       // Post a text reply
@@ -159,6 +172,24 @@ function postMsg(options) {
     console.log('statusCode:', response && response.statusCode);
     console.log('body:', body);
   });
+}
+
+function insertionSort(files) {
+  var a = files.slice();
+  var tmp;
+
+  for (i = 0; i < a.length; i++) {
+    for (j = i; j > 0; j--) {
+      if (a[j].counter < a[j - 1].counter) {
+
+        tmp = a[j - 1];
+        a[j - 1] = a[j];
+        a[j] = tmp;
+      }
+    }
+  }
+
+  return a;
 }
 
 // Express listen
