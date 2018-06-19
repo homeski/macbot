@@ -4,6 +4,9 @@ all:
   - match: 'macbot'
     replies:
       - image
+  - match: 'macbot math'
+    replies:
+      - stats
 12345678:
   - match: 'foo'
     replies:

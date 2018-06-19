@@ -20,6 +20,12 @@ const PORT = 8080;
 var BOT, TOKEN;
 var files = [];
 
+// Define picture class
+var Picture = function(filename) {
+  this.filename = filename;
+  this.counter = 0;
+}
+
 // Command line arguments
 DEBUG = process.env.DEBUG === 'true' ? true : false;
 
@@ -48,7 +54,9 @@ var msg_options = {
 };
 
 // Load the array of photo filenames
-files = fs.readdirSync('./photos');
+fs.readdirSync('./photos').forEach(function(e) {
+  files.push(new Picture(e));
+});
 
 // Express
 const app = express();
@@ -111,10 +119,11 @@ app.post('/groupme', function (req, res) {
       break;
     case 'image':
       // Pick a random photo to use
-      var filename = files[getRandomInt(files.length)];
+      var random = getRandomInt(files.length)
+      files[random].counter++;
 
       // Submit photo to groupme photo service and get the image URL back
-      var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/" + filename;
+      var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/" + files[random].filename;
       console.log('cmd: ', cmd);
 
       var response = shell.exec(cmd).stdout;
@@ -122,9 +131,12 @@ app.post('/groupme', function (req, res) {
 
       postMsg({'picture_url': img_url});
       break;
+    case 'stats':
+      postMsg({'text': 'foo'});
+      break;
     default:
       // Post a text reply
-      postMsg({ 'text': reply });
+      postMsg({'text': reply});
       break;
   }
 });
@@ -149,5 +161,6 @@ function postMsg(options) {
   });
 }
 
+// Express listen
 app.listen(PORT);
 console.log('Running on http://localhost:' + PORT);
