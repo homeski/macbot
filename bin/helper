@@ -11,7 +11,7 @@ fi
 case $ACTION in
 build)
   echo build $TAG
-  docker build -t homeski/macbot ..
+  docker build -t homeski/macbot .
   ;;
 run)
   echo run $TAG
@@ -54,10 +54,10 @@ watch)
   ;;
 reload)
   echo reload $TAG
-  ./helper build $2
-  ./helper kill $2
-  ./helper run $2
-  ./helper watch $2
+  ./bin/helper build $2
+  ./bin/helper kill $2
+  ./bin/helper run $2
+  ./bin/helper watch $2
   ;;
 *)
   echo 'unknown command. use build | run | test | kill | reload | watch and -d for debug'
