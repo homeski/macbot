@@ -32,8 +32,8 @@ DEBUG = process.env.DEBUG === 'true' ? true : false;
 // Load config and choose the correct bot
 // Get document, or throw exception on error
 try {
-  var doc = yaml.safeLoad(fs.readFileSync('./credentials.yaml', 'utf8'));
-  var matches = yaml.safeLoad(fs.readFileSync('./matches.yaml', 'utf8'));
+  var doc = yaml.safeLoad(fs.readFileSync('../config/credentials.yaml', 'utf8'));
+  var matches = yaml.safeLoad(fs.readFileSync('../config/matches.yaml', 'utf8'));
 } catch (e) {
   console.log(e);
   process.exit(1);
@@ -123,7 +123,7 @@ app.post('/groupme', function (req, res) {
       files[random].counter++;
 
       // Submit photo to groupme photo service and get the image URL back
-      var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @./photos/" + files[random].filename;
+      var cmd = "curl -s 'https://image.groupme.com/pictures' -X POST -H 'X-Access-Token: " + TOKEN + "' -H 'Content-Type: image/jpeg' --data-binary @../photos/" + files[random].filename;
       console.log('cmd: ', cmd);
 
       var response = shell.exec(cmd).stdout;

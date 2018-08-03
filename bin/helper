@@ -11,7 +11,7 @@ fi
 case $ACTION in
 build)
   echo build $TAG
-  docker build -t homeski/macbot .
+  docker build -t homeski/macbot ..
   ;;
 run)
   echo run $TAG
@@ -20,7 +20,7 @@ run)
 
   if [[ -z $TAG ]]; then
     # non-debug
-    docker run -d -p 3001:8080 --name macbot   --network=macbot_nw --env DB_NAME=influxdb homeski/macbot 
+    docker run -d -p 3001:8080 --name macbot   --network=macbot_nw --env DB_NAME=influxdb homeski/macbot
     docker run -d -p 8081:80 -p 9081:8083  --name=influxdb --network=macbot_nw                        homeski/grafana-influxdb
   else
     # debug
