@@ -1,8 +1,7 @@
-photos/
+photos/*
+!photos/.gitkeep
 
-credentials.yaml
-matches.yaml
-
-notes.md
+config/*
+!config/.gitkeep
 
 .DS_Store

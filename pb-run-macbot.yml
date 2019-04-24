@@ -1,0 +1,36 @@
+- hosts: localhost
+  name: Template configs
+  tasks:
+    - name: Template config/credentials.yaml
+      template:
+        src: templates/credentials.yml.j2
+        dest: config/credentials.yml
+
+    - name: Template config/matches.yaml
+      template:
+        src: templates/matches.yml.j2
+        dest: config/matches.yml
+
+
+
+- hosts: localhost
+  connection: local
+  name: docker-compose management
+  tasks:
+    - name: docker-compose stop
+      docker_service:
+        project_src: "."
+        state: absent
+      register: output
+
+    - name: docker-compose start
+      docker_service:
+        project_src: "."
+        state: present
+        build: yes
+        scale:
+          web: 1
+      register: output
+
+  tags:
+    - docker-compose

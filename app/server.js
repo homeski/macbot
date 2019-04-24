@@ -32,8 +32,8 @@ DEBUG = process.env.DEBUG === 'true' ? true : false;
 // Load config and choose the correct bot
 // Get document, or throw exception on error
 try {
-  var doc = yaml.safeLoad(fs.readFileSync('./config/credentials.yaml', 'utf8'));
-  var matches = yaml.safeLoad(fs.readFileSync('./config/matches.yaml', 'utf8'));
+  var doc = yaml.safeLoad(fs.readFileSync('./config/credentials.yml', 'utf8'));
+  var matches = yaml.safeLoad(fs.readFileSync('./config/matches.yml', 'utf8'));
 } catch (e) {
   console.log(e);
   process.exit(1);
