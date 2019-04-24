@@ -145,6 +145,8 @@ app.post('/groupme', function (req, res) {
         i++;
       }
 
+      string += '# Photos: ' + sortedFiles.length;
+
       postMsg({'text': string});
       break;
     default:
