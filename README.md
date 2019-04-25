@@ -6,6 +6,8 @@
 macbot.groupme_access_token: ''
 macbot.bots: []
 macbot.matches: {}
+macbot.listen: ''
+macbot.port: ''
 ```
 
 **run:**

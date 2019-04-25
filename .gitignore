@@ -4,4 +4,6 @@ photos/*
 config/*
 !config/.gitkeep
 
+docker-compose.yml
+
 .DS_Store

@@ -1,0 +1,7 @@
+version: '3'
+services:
+  macbot:
+    build:
+      context: .
+    ports:
+      - "{{ macbot.listen }}:{{ macbot.port }}:8080"

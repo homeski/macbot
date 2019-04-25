@@ -1,15 +1,27 @@
 - hosts: localhost
   name: Template configs
+  vars:
+    macbot:
+      groupme_access_token: ''
+      bots: []
+      matches: {}
+      listen: 127.0.0.1
+      port: 3000
   tasks:
-    - name: Template config/credentials.yaml
+    - name: Template config/credentials.yml
       template:
         src: templates/credentials.yml.j2
         dest: config/credentials.yml
 
-    - name: Template config/matches.yaml
+    - name: Template config/matches.yml
       template:
         src: templates/matches.yml.j2
         dest: config/matches.yml
+
+    - name: Template docker-compose.yml
+      template:
+        src: templates/docker-compose.yml.j2
+        dest: docker-compose.yml
 
 
 
