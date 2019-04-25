@@ -39,8 +39,8 @@ try {
   process.exit(1);
 }
 
-// Choose which credentials to use
-BOT = DEBUG == true ? doc.bots[0] : doc.bots[1];
+// Load the bot
+BOT = doc.bot;
 TOKEN = doc.access_token;
 
 // Build the base request for sending messages
